@@ -70,37 +70,38 @@ func (c *SAPAPICaller) Header(productionRoutingGroup, productionRouting string) 
 	headerData, err := c.callProductionRoutingSrvAPIRequirementHeader("ProductionRoutingHeader", productionRoutingGroup, productionRouting)
 	if err != nil {
 		c.log.Error(err)
-		return
+	} else {
+		c.log.Info(headerData)
 	}
-	c.log.Info(headerData)
 
 	materialAssignmentData, err := c.callToMaterialAssignment(headerData[0].ToMaterialAssignment)
 	if err != nil {
 		c.log.Error(err)
-		return
+	} else {
+		c.log.Info(materialAssignmentData)
 	}
-	c.log.Info(materialAssignmentData)
 
 	sequenceData, err := c.callToSequence(headerData[0].ToSequence)
 	if err != nil {
 		c.log.Error(err)
-		return
+	} else {
+		c.log.Info(sequenceData)
 	}
-	c.log.Info(sequenceData)
 
 	operationData, err := c.callToOperation(sequenceData[0].ToOperation)
 	if err != nil {
 		c.log.Error(err)
-		return
+	} else {
+		c.log.Info(operationData)
 	}
-	c.log.Info(operationData)
 
 	componentAllocationData, err := c.callToComponentAllocation(operationData[0].ToComponentAllocation)
 	if err != nil {
 		c.log.Error(err)
-		return
+	} else {
+		c.log.Info(componentAllocationData)
 	}
-	c.log.Info(componentAllocationData)
+	return
 }
 
 func (c *SAPAPICaller) callProductionRoutingSrvAPIRequirementHeader(api, productionRoutingGroup, productionRouting string) ([]sap_api_output_formatter.Header, error) {
@@ -185,9 +186,9 @@ func (c *SAPAPICaller) ProductPlant(plant, product string) {
 	data, err := c.callProductionRoutingSrvAPIRequirementProductPlant("ProductionRoutingMatlAssgmt", plant, product)
 	if err != nil {
 		c.log.Error(err)
-		return
+	} else {
+		c.log.Info(data)
 	}
-	c.log.Info(data)
 
 	sequenceData, err := c.callToSequence(
 		fmt.Sprintf("%s/API_PRODUCTION_ROUTING/ProductionRoutingHeader(ProductionRoutingGroup='%s',ProductionRouting='%s',ProductionRoutingInternalVers='%s')/to_Sequence",
@@ -196,16 +197,17 @@ func (c *SAPAPICaller) ProductPlant(plant, product string) {
 	)
 	if err != nil {
 		c.log.Error(err)
-		return
+	} else {
+		c.log.Info(sequenceData)
 	}
-	c.log.Info(sequenceData)
 
 	operationData, err := c.callToOperation(sequenceData[0].ToOperation)
 	if err != nil {
 		c.log.Error(err)
-		return
+	} else {
+		c.log.Info(operationData)
 	}
-	c.log.Info(operationData)
+	return
 }
 
 func (c *SAPAPICaller) callProductionRoutingSrvAPIRequirementProductPlant(api, plant, product string) ([]sap_api_output_formatter.MaterialAssignment, error) {
